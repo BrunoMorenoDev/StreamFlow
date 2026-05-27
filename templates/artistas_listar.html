@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Artistas | StreamFlow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-950 text-white min-h-screen">
+
+    <nav class="bg-slate-900 border-b border-slate-800">
+
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+            <div class="flex gap-8 items-center">
+
+                <h1 class="text-3xl font-bold text-cyan-400">
+                    StreamFlow
+                </h1>
+
+                <div class="flex gap-5 text-slate-300">
+
+                    <a href="/usuarios/" class="hover:text-cyan-400">
+                        Usuarios
+                    </a>
+
+                    <a href="/artistas/" class="text-cyan-400 font-semibold">
+                        Artistas
+                    </a>
+
+                </div>
+
+            </div>
+
+            <a href="{% url 'artistas_crear' %}"
+               class="bg-cyan-500 hover:bg-cyan-600 px-5 py-3 rounded-xl font-semibold">
+                + Nuevo artista
+            </a>
+
+        </div>
+
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-10">
+
+        <div class="mb-8">
+
+            <h2 class="text-4xl font-bold">
+                Artistas
+            </h2>
+
+            <p class="text-slate-400 mt-2">
+                Gestión de artistas musicales
+            </p>
+
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+
+            <table class="w-full text-sm">
+
+                <thead class="bg-slate-800 text-slate-300">
+
+                    <tr>
+
+                        <th class="text-left p-4">
+                            ID
+                        </th>
+
+                        <th class="text-left p-4">
+                            Nombre artístico
+                        </th>
+
+                        <th class="text-left p-4">
+                            País
+                        </th>
+
+                        <th class="text-left p-4">
+                            Discográfica
+                        </th>
+
+                        <th class="text-left p-4">
+                            Estado
+                        </th>
+
+                        <th class="text-center p-4">
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for artista in artistas %}
+
+                    <tr class="border-t border-slate-800 hover:bg-slate-800/60 transition">
+
+                        <td class="p-4">
+                            {{ artista.id }}
+                        </td>
+
+                        <td class="p-4 font-semibold">
+                            {{ artista.nombre }}
+                        </td>
+
+                        <td class="p-4 text-slate-400">
+                            {{ artista.pais }}
+                        </td>
+
+                        <td class="p-4">
+                            {{ artista.discografica }}
+                        </td>
+
+                        <td class="p-4">
+
+                            <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400">
+                                {{ artista.estado }}
+                            </span>
+
+                        </td>
+
+                        <td class="p-4">
+
+                            <div class="flex justify-center gap-3">
+
+                                <a href="{% url 'artistas_editar' artista.id %}"
+                                   class="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-lg font-semibold">
+                                    Editar
+                                </a>
+
+                                <a href="{% url 'artistas_eliminar' artista.id %}"
+                                   onclick="return confirm('¿Eliminar artista?')"
+                                   class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg font-semibold">
+                                    Eliminar
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
