@@ -1,14 +1,96 @@
 from django.shortcuts import render, redirect
 from django.db import connection
+from django.shortcuts import redirect
+
+def index(request):
+    return redirect('login')
+
+# =========================
+# LOGIN
+# =========================
+
+def es_administrador(request):
+
+    if 'tipoUsuario' not in request.session:
+        return False
+
+    return request.session['tipoUsuario'] == 'Administrador'
+
+
+def es_gestor_o_admin(request):
+
+    if 'tipoUsuario' not in request.session:
+        return False
+
+    return request.session['tipoUsuario'] in [
+        'Administrador',
+        'GestorContenido'
+    ] 
+    
+def login_view(request):
+
+    if request.method == 'POST':
+
+        email = request.POST['email']
+        contrasena = request.POST['contrasena']
+
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT idUsuario, nombre, email, tipoUsuario, estado
+                FROM Seguridad.Usuario
+                WHERE email = %s
+                  AND contrasena = %s
+            """, [email, contrasena])
+
+            row = cursor.fetchone()
+
+        if row is not None:
+
+            if row[4] != 'Activo':
+                return render(request, 'login.html', {
+                    'error': 'El usuario está inactivo.'
+                })
+
+            request.session['idUsuario'] = row[0]
+            request.session['nombre'] = row[1]
+            request.session['email'] = row[2]
+            request.session['tipoUsuario'] = row[3]
+
+            return redirect('home')
+
+        return render(request, 'login.html', {
+            'error': 'Correo o contraseña incorrectos.'
+        })
+
+    return render(request, 'login.html')
+
+
+# =========================
+# LOGOUT
+# =========================
+
+def logout_view(request):
+
+    request.session.flush()
+
+    return redirect('login')
 
 
 # =========================
 # HOME
 # =========================
 
-def index(request):
+def home_view(request):
 
-    return redirect('usuarios_listar')
+    if 'idUsuario' not in request.session:
+        return redirect('login')
+
+    return render(request, 'home.html')
+# =========================
+# HOME
+# =========================
+
+
 
 
 # =========================
@@ -16,6 +98,8 @@ def index(request):
 # =========================
 
 def usuarios_listar(request):
+    if not es_administrador(request):
+     return redirect('home') 
 
     with connection.cursor() as cursor:
 
@@ -49,6 +133,9 @@ def usuarios_listar(request):
 # =========================
 
 def usuarios_crear(request):
+    
+    if not es_administrador(request):
+     return redirect('home') 
 
     if request.method == 'POST':
 
@@ -76,6 +163,8 @@ def usuarios_crear(request):
 # =========================
 
 def usuarios_editar(request, idUsuario):
+    if not es_administrador(request):
+     return redirect('home') 
 
     with connection.cursor() as cursor:
 
@@ -144,6 +233,8 @@ def usuarios_editar(request, idUsuario):
 # =========================
 
 def usuarios_eliminar(request, idUsuario):
+    if not es_administrador(request):
+     return redirect('home')
 
     with connection.cursor() as cursor:
 
