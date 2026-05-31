@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Mis Likes | StreamFlow
+{% endblock %}
+
+{% block content %}
+
+<div class="mb-8">
+    <h1 class="text-5xl font-black">Mis Likes</h1>
+    <p class="text-slate-400 mt-3">
+        Canciones guardadas por {{ request.session.nombre }}.
+    </p>
+</div>
+
+<div class="bg-zinc-950/80 border border-white/10 rounded-3xl overflow-hidden">
+    <table class="w-full text-sm">
+        <thead class="bg-white/5 text-slate-300">
+            <tr>
+                <th class="text-left p-4">Canción</th>
+                <th class="text-left p-4">Artista</th>
+                <th class="text-left p-4">Álbum</th>
+                <th class="text-left p-4">Duración</th>
+                <th class="text-left p-4">Fecha</th>
+                <th class="text-center p-4">Acción</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for cancion in canciones %}
+            <tr class="border-t border-white/10 hover:bg-white/5 transition">
+                <td class="p-4 font-bold">{{ cancion.titulo }}</td>
+                <td class="p-4 text-slate-300">{{ cancion.artista }}</td>
+                <td class="p-4 text-slate-400">{{ cancion.album }}</td>
+                <td class="p-4 text-slate-400">{{ cancion.duracion }}</td>
+                <td class="p-4 text-slate-500">{{ cancion.fecha }}</td>
+                <td class="p-4">
+                    <form method="POST" action="{% url 'canciones_quitar_like' cancion.id %}" class="flex justify-center">
+                        {% csrf_token %}
+                        <input type="hidden" name="volver" value="likes">
+                        <button type="submit" class="px-4 py-2 rounded-full bg-red-500/20 text-red-300 hover:bg-red-500/30 transition">
+                            Quitar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="p-8 text-center text-slate-400">
+                    Todavía no tienes canciones con like.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

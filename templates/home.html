@@ -6,6 +6,12 @@ Inicio | StreamFlow
 
 {% block content %}
 
+{% if error %}
+<div class="mb-8 bg-red-500/10 border border-red-500/40 text-red-300 px-5 py-4 rounded-2xl">
+    {{ error }}
+</div>
+{% endif %}
+
 <div class="mb-10">
 
     <h1 class="text-5xl font-black">
@@ -13,7 +19,7 @@ Inicio | StreamFlow
     </h1>
 
     <p class="text-slate-400 mt-4 text-lg">
-        Descubre música, playlists y artistas recomendados.
+        Descubre m&uacute;sica, playlists y artistas recomendados.
     </p>
 
 </div>
@@ -35,22 +41,46 @@ Inicio | StreamFlow
 
     <div class="grid grid-cols-5 gap-6">
 
-        {% for i in "12345" %}
+        {% for mix in mixes %}
 
         <div class="bg-zinc-900 hover:bg-zinc-800 transition rounded-2xl p-4 group cursor-pointer">
 
-            <div class="aspect-square rounded-xl bg-gradient-to-br from-green-500 via-purple-500 to-pink-500 flex items-center justify-center text-5xl">
-                🎵
+            <div class="aspect-square rounded-xl overflow-hidden grid grid-cols-2 grid-rows-2 bg-zinc-800">
+                {% for artista in mix.artistas %}
+                <div class="relative min-h-0 bg-gradient-to-br from-green-500 via-cyan-500 to-zinc-950">
+                    <div class="absolute inset-0 flex items-end p-3">
+                        <span class="text-white text-xs font-black drop-shadow-lg leading-tight">
+                            {{ artista.nombre }}
+                        </span>
+                    </div>
+
+                    <div class="fallback-artista absolute inset-0 flex items-end p-3">
+                        <span class="text-white text-xs font-black drop-shadow-lg leading-tight">
+                            {{ artista.nombre }}
+                        </span>
+                    </div>
+
+                    {% if artista.imagen %}
+                    <img src="{{ artista.imagen }}"
+                         alt="{{ artista.nombre }}"
+                         loading="lazy"
+                         referrerpolicy="no-referrer"
+                         class="relative w-full h-full object-cover object-center group-hover:scale-105 transition duration-500"
+                         onload="this.previousElementSibling.style.display='none';"
+                         onerror="this.style.display='none'; this.previousElementSibling.style.display='flex';">
+                    {% endif %}
+                </div>
+                {% endfor %}
             </div>
 
             <div class="mt-4">
 
                 <h3 class="font-bold text-lg">
-                    Mix diario {{ i }}
+                    {{ mix.titulo }}
                 </h3>
 
                 <p class="text-slate-400 text-sm mt-2">
-                    Bad Bunny, Mora, Feid y más
+                    {{ mix.descripcion }}
                 </p>
 
             </div>
@@ -80,22 +110,27 @@ Inicio | StreamFlow
 
     <div class="grid grid-cols-5 gap-6">
 
-        {% for i in "12345" %}
+        {% for playlist in playlists_inicio %}
 
-        <div class="bg-zinc-900 hover:bg-zinc-800 transition rounded-2xl p-4 cursor-pointer">
+        <div class="bg-zinc-900 hover:bg-zinc-800 transition rounded-2xl p-4 cursor-pointer group">
 
-            <div class="aspect-square rounded-xl bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-500 flex items-center justify-center text-5xl">
-                💿
+            <div class="aspect-square rounded-xl overflow-hidden bg-zinc-800">
+                <img src="{{ playlist.imagen }}"
+                     alt="{{ playlist.titulo }}"
+                     loading="lazy"
+                     referrerpolicy="no-referrer"
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=80';">
             </div>
 
             <div class="mt-4">
 
                 <h3 class="font-bold text-lg">
-                    Playlist {{ i }}
+                    {{ playlist.titulo }}
                 </h3>
 
                 <p class="text-slate-400 text-sm mt-2">
-                    Música recomendada para ti
+                    {{ playlist.descripcion }}
                 </p>
 
             </div>

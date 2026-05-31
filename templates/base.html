@@ -45,35 +45,39 @@
                     <span>Inicio</span>
                 </a>
 
-                <a href="#"
+                <a href="{% url 'canciones_listar' %}"
                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 hover:text-white transition">
                     <i data-lucide="music-4" class="w-5 h-5"></i>
                     <span>Canciones</span>
                 </a>
 
-                <a href="#"
+                <a href="{% url 'albumes_listar' %}"
                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 hover:text-white transition">
                     <i data-lucide="disc-3" class="w-5 h-5"></i>
-                    <span>Álbumes</span>
+                    <span>&Aacute;lbumes</span>
                 </a>
 
-                <a href="#"
+                {% if request.session.tipoUsuario == "Administrador" or request.session.tipoUsuario == "GestorContenido" or request.session.tipoUsuario == "Premium" %}
+                <a href="{% url 'playlists_listar' %}"
                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 hover:text-white transition">
                     <i data-lucide="list-music" class="w-5 h-5"></i>
                     <span>Playlists</span>
                 </a>
+                {% endif %}
 
-                <a href="#"
+                {% if request.session.tipoUsuario == "Administrador" or request.session.tipoUsuario == "Premium" or request.session.tipoUsuario == "Free" %}
+                <a href="{% url 'likes_listar' %}"
                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 hover:text-white transition">
                     <i data-lucide="heart" class="w-5 h-5"></i>
                     <span>Mis Likes</span>
                 </a>
+                {% endif %}
 
-                <!-- ADMINISTRACIÓN -->
+                <!-- ADMINISTRACION -->
                 {% if request.session.tipoUsuario == "Administrador" or request.session.tipoUsuario == "GestorContenido" %}
 
                 <div class="pt-6 mt-6 border-t border-white/10 text-xs uppercase tracking-widest text-slate-500 px-4">
-                    Administración
+                    Administraci&oacute;n
                 </div>
 
                 {% if request.session.tipoUsuario == "Administrador" %}
@@ -90,26 +94,23 @@
                     <span>Artistas</span>
                 </a>
 
-                <a href="#"
+                <a href="{% url 'albumes_admin' %}"
                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 hover:text-white transition">
                     <i data-lucide="disc-3" class="w-5 h-5"></i>
-                    <span>Álbumes Admin</span>
+                    <span>&Aacute;lbumes Admin</span>
                 </a>
 
-                <a href="#"
+                <a href="{% url 'canciones_admin' %}"
                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 hover:text-white transition">
                     <i data-lucide="music-4" class="w-5 h-5"></i>
                     <span>Canciones Admin</span>
                 </a>
 
-                {% if request.session.tipoUsuario == "Administrador" %}
-                <a href="#"
+                <a href="{% url 'reportes' %}"
                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 hover:text-white transition">
                     <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
                     <span>Reportes</span>
                 </a>
-                {% endif %}
-
                 {% endif %}
 
             </nav>
@@ -125,7 +126,7 @@
                         </p>
 
                         <p class="text-green-500 text-xs">
-                            {{ request.session.tipoUsuario|default:"Sin sesión" }}
+                            {{ request.session.tipoUsuario|default:"Sin sesi&oacute;n" }}
                         </p>
                     </div>
 
@@ -149,17 +150,45 @@
                 <div class="w-full max-w-xl">
                     <div class="bg-zinc-900 border border-white/10 rounded-full px-5 py-3 flex items-center gap-3 text-slate-400">
                         <i data-lucide="search" class="w-5 h-5"></i>
-                        <span>¿Qué quieres reproducir?</span>
+                        <span>&iquest;Qu&eacute; quieres reproducir?</span>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-4">
+                <div class="relative flex items-center gap-4">
                     <button class="text-slate-400 hover:text-white transition">
                         <i data-lucide="bell" class="w-5 h-5"></i>
                     </button>
 
-                    <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-black font-black">
+                    <button id="perfilBoton"
+                            type="button"
+                            class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-black font-black hover:bg-green-400 transition">
                         {{ request.session.nombre|default:"U"|slice:":1" }}
+                    </button>
+
+                    <div id="perfilMenu"
+                         class="hidden absolute right-0 top-14 w-56 bg-zinc-950 border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50">
+                        <div class="px-4 py-3 border-b border-white/10">
+                            <p class="font-bold text-sm">{{ request.session.nombre|default:"Invitado" }}</p>
+                            <p class="text-green-500 text-xs">{{ request.session.tipoUsuario|default:"Sin sesi&oacute;n" }}</p>
+                        </div>
+
+                        <a href="#"
+                           class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-white/10 hover:text-white transition">
+                            <i data-lucide="user" class="w-4 h-4"></i>
+                            <span>Mi perfil</span>
+                        </a>
+
+                        <a href="#"
+                           class="flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-white/10 hover:text-white transition">
+                            <i data-lucide="settings" class="w-4 h-4"></i>
+                            <span>Configuraci&oacute;n</span>
+                        </a>
+
+                        <a href="{% url 'logout' %}"
+                           class="flex items-center gap-3 px-4 py-3 text-red-300 hover:bg-red-500/10 transition">
+                            <i data-lucide="log-out" class="w-4 h-4"></i>
+                            <span>Salir del perfil</span>
+                        </a>
                     </div>
                 </div>
 
@@ -210,17 +239,103 @@
         </div>
 
         <div class="flex justify-end items-center gap-3 w-1/3 text-slate-400">
-            <i data-lucide="volume-2" class="w-5 h-5"></i>
+            <button id="volumenIcono"
+                    type="button"
+                    class="hover:text-white transition"
+                    title="Silenciar">
+                <i data-lucide="volume-2" class="w-5 h-5"></i>
+            </button>
 
-            <div class="w-28 h-1 bg-zinc-800 rounded-full">
-                <div class="h-1 bg-white rounded-full w-2/3"></div>
+            <div id="volumenBarra"
+                 class="w-28 h-4 flex items-center cursor-pointer group"
+                 title="Volumen">
+                <div class="w-full h-1 bg-zinc-800 rounded-full">
+                    <div id="volumenNivel"
+                         class="h-1 bg-white group-hover:bg-green-500 rounded-full w-2/3"></div>
+                </div>
             </div>
+
+            <span id="volumenTexto" class="w-9 text-xs text-slate-500 text-right">67%</span>
         </div>
 
     </footer>
 
     <script>
         lucide.createIcons();
+
+        const perfilBoton = document.getElementById('perfilBoton');
+        const perfilMenu = document.getElementById('perfilMenu');
+
+        if (perfilBoton && perfilMenu) {
+            perfilBoton.addEventListener('click', function (event) {
+                event.stopPropagation();
+                perfilMenu.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', function (event) {
+                if (!perfilMenu.contains(event.target) && !perfilBoton.contains(event.target)) {
+                    perfilMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        const volumenBarra = document.getElementById('volumenBarra');
+        const volumenNivel = document.getElementById('volumenNivel');
+        const volumenTexto = document.getElementById('volumenTexto');
+        const volumenIcono = document.getElementById('volumenIcono');
+        let volumenActual = 67;
+        let volumenAnterior = 67;
+        let moviendoVolumen = false;
+
+        function pintarVolumen(valor) {
+            volumenActual = Math.max(0, Math.min(100, valor));
+            volumenNivel.style.width = volumenActual + '%';
+            volumenTexto.textContent = Math.round(volumenActual) + '%';
+
+            if (volumenActual === 0) {
+                volumenIcono.innerHTML = '<i data-lucide="volume-x" class="w-5 h-5"></i>';
+            } else if (volumenActual < 50) {
+                volumenIcono.innerHTML = '<i data-lucide="volume-1" class="w-5 h-5"></i>';
+            } else {
+                volumenIcono.innerHTML = '<i data-lucide="volume-2" class="w-5 h-5"></i>';
+            }
+
+            lucide.createIcons();
+        }
+
+        function cambiarVolumen(event) {
+            const rect = volumenBarra.getBoundingClientRect();
+            const x = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
+            pintarVolumen((x / rect.width) * 100);
+        }
+
+        if (volumenBarra && volumenNivel && volumenTexto && volumenIcono) {
+            volumenBarra.addEventListener('mousedown', function (event) {
+                moviendoVolumen = true;
+                cambiarVolumen(event);
+            });
+
+            document.addEventListener('mousemove', function (event) {
+                if (moviendoVolumen) {
+                    cambiarVolumen(event);
+                }
+            });
+
+            document.addEventListener('mouseup', function () {
+                moviendoVolumen = false;
+            });
+
+            volumenIcono.addEventListener('click', function () {
+                if (volumenActual === 0) {
+                    pintarVolumen(volumenAnterior || 67);
+                } else {
+                    volumenAnterior = volumenActual;
+                    pintarVolumen(0);
+                }
+            });
+
+            pintarVolumen(volumenActual);
+        }
     </script>
 
 </body>

@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Reportes | StreamFlow
+{% endblock %}
+
+{% block content %}
+
+<div class="mb-8 flex items-center justify-between">
+    <div>
+        <h1 class="text-5xl font-black">Reportes</h1>
+        <p class="text-slate-400 mt-3">
+            Dashboard administrativo de usuarios, biblioteca, playlists y actividad.
+        </p>
+    </div>
+
+    <div class="bg-green-500/10 border border-green-500/30 text-green-300 px-5 py-3 rounded-2xl text-sm font-bold">
+        Panel de administraci&oacute;n
+    </div>
+</div>
+
+<div class="grid grid-cols-4 gap-5 mb-8">
+    <div class="bg-zinc-950/80 border border-white/10 rounded-3xl p-5">
+        <p class="text-slate-400 text-sm">Usuarios</p>
+        <h2 class="text-4xl font-black mt-2">{{ total_usuarios }}</h2>
+        <p class="text-green-400 text-sm mt-2">{{ usuarios_activos }} activos</p>
+    </div>
+
+    <div class="bg-zinc-950/80 border border-white/10 rounded-3xl p-5">
+        <p class="text-slate-400 text-sm">Canciones</p>
+        <h2 class="text-4xl font-black mt-2">{{ total_canciones }}</h2>
+        <p class="text-cyan-400 text-sm mt-2">{{ total_albumes }} &aacute;lbumes</p>
+    </div>
+
+    <div class="bg-zinc-950/80 border border-white/10 rounded-3xl p-5">
+        <p class="text-slate-400 text-sm">Playlists</p>
+        <h2 class="text-4xl font-black mt-2">{{ total_playlists }}</h2>
+        <p class="text-purple-300 text-sm mt-2">{{ total_likes }} likes guardados</p>
+    </div>
+
+    <div class="bg-zinc-950/80 border border-white/10 rounded-3xl p-5">
+        <p class="text-slate-400 text-sm">Artistas</p>
+        <h2 class="text-4xl font-black mt-2">{{ total_artistas }}</h2>
+        <p class="text-red-300 text-sm mt-2">{{ usuarios_inactivos }} usuarios inactivos</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-2 gap-6 mb-8">
+    <section class="bg-zinc-950/80 border border-white/10 rounded-3xl p-6">
+        <h2 class="text-2xl font-black mb-5">Usuarios por tipo</h2>
+
+        <div class="space-y-4">
+            {% for item in usuarios_por_tipo %}
+            <div>
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="text-slate-300">{{ item.tipo }}</span>
+                    <span class="text-green-400 font-bold">{{ item.total }}</span>
+                </div>
+                <div class="h-2 bg-zinc-800 rounded-full">
+                    <div class="h-2 bg-green-500 rounded-full" style="width: {% widthratio item.total total_usuarios 100 %}%"></div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-slate-400">No hay datos de usuarios.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="bg-zinc-950/80 border border-white/10 rounded-3xl p-6">
+        <h2 class="text-2xl font-black mb-5">Estado de cuentas</h2>
+
+        <div class="space-y-4">
+            {% for item in usuarios_por_estado %}
+            <div>
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="text-slate-300">{{ item.estado }}</span>
+                    <span class="text-cyan-400 font-bold">{{ item.total }}</span>
+                </div>
+                <div class="h-2 bg-zinc-800 rounded-full">
+                    <div class="h-2 bg-cyan-500 rounded-full" style="width: {% widthratio item.total total_usuarios 100 %}%"></div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-slate-400">No hay datos de estado.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+<div class="grid grid-cols-2 gap-6 mb-8">
+    <section class="bg-zinc-950/80 border border-white/10 rounded-3xl overflow-hidden">
+        <div class="p-6 border-b border-white/10">
+            <h2 class="text-2xl font-black">Canciones con m&aacute;s likes</h2>
+        </div>
+
+        <table class="w-full text-sm">
+            <thead class="bg-white/5 text-slate-300">
+                <tr>
+                    <th class="text-left p-4">Canci&oacute;n</th>
+                    <th class="text-left p-4">Artista</th>
+                    <th class="text-right p-4">Likes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cancion in canciones_top %}
+                <tr class="border-t border-white/10 hover:bg-white/5 transition">
+                    <td class="p-4">
+                        <p class="font-bold">{{ cancion.titulo }}</p>
+                        <p class="text-slate-500 text-xs">{{ cancion.album }}</p>
+                    </td>
+                    <td class="p-4 text-slate-300">{{ cancion.artista }}</td>
+                    <td class="p-4 text-right text-green-400 font-black">{{ cancion.likes }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="p-6 text-center text-slate-400">No hay likes registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="bg-zinc-950/80 border border-white/10 rounded-3xl overflow-hidden">
+        <div class="p-6 border-b border-white/10">
+            <h2 class="text-2xl font-black">Playlists con m&aacute;s canciones</h2>
+        </div>
+
+        <table class="w-full text-sm">
+            <thead class="bg-white/5 text-slate-300">
+                <tr>
+                    <th class="text-left p-4">Playlist</th>
+                    <th class="text-left p-4">Creador</th>
+                    <th class="text-right p-4">Canciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for playlist in playlists_top %}
+                <tr class="border-t border-white/10 hover:bg-white/5 transition">
+                    <td class="p-4">
+                        <p class="font-bold">{{ playlist.nombre }}</p>
+                        <p class="text-slate-500 text-xs">{{ playlist.tipo }}</p>
+                    </td>
+                    <td class="p-4 text-slate-300">{{ playlist.creador }}</td>
+                    <td class="p-4 text-right text-cyan-400 font-black">{{ playlist.canciones }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="p-6 text-center text-slate-400">No hay playlists registradas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+
+<div class="grid grid-cols-3 gap-6 mb-8">
+    <section class="bg-zinc-950/80 border border-white/10 rounded-3xl p-6">
+        <h2 class="text-2xl font-black mb-5">Artistas con m&aacute;s cat&aacute;logo</h2>
+
+        <div class="space-y-4">
+            {% for artista in artistas_top %}
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div>
+                    <p class="font-bold">{{ artista.nombre }}</p>
+                    <p class="text-slate-500 text-xs">{{ artista.albumes }} &aacute;lbumes</p>
+                </div>
+                <span class="text-green-400 font-black">{{ artista.canciones }}</span>
+            </div>
+            {% empty %}
+            <p class="text-slate-400">No hay artistas registrados.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="bg-zinc-950/80 border border-white/10 rounded-3xl p-6">
+        <h2 class="text-2xl font-black mb-5">Usuarios con m&aacute;s likes</h2>
+
+        <div class="space-y-4">
+            {% for usuario in usuarios_likes %}
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div>
+                    <p class="font-bold">{{ usuario.nombre }}</p>
+                    <p class="text-slate-500 text-xs">{{ usuario.tipo }}</p>
+                </div>
+                <span class="text-purple-300 font-black">{{ usuario.likes }}</span>
+            </div>
+            {% empty %}
+            <p class="text-slate-400">No hay actividad de likes.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="bg-zinc-950/80 border border-white/10 rounded-3xl p-6">
+        <h2 class="text-2xl font-black mb-5">Usuarios con m&aacute;s playlists</h2>
+
+        <div class="space-y-4">
+            {% for usuario in usuarios_playlists %}
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div>
+                    <p class="font-bold">{{ usuario.nombre }}</p>
+                    <p class="text-slate-500 text-xs">{{ usuario.tipo }}</p>
+                </div>
+                <span class="text-cyan-400 font-black">{{ usuario.playlists }}</span>
+            </div>
+            {% empty %}
+            <p class="text-slate-400">No hay playlists de usuarios.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+<section class="bg-zinc-950/80 border border-white/10 rounded-3xl overflow-hidden">
+    <div class="p-6 border-b border-white/10 flex items-center justify-between">
+        <div>
+            <h2 class="text-2xl font-black">Usuarios desconectados o inactivos</h2>
+            <p class="text-slate-400 text-sm mt-1">
+                Cuentas que no aparecen como activas en Seguridad.Usuario.
+            </p>
+        </div>
+
+        <span class="px-4 py-2 rounded-full bg-red-500/10 text-red-300 font-bold text-sm">
+            {{ usuarios_inactivos }} cuentas
+        </span>
+    </div>
+
+    <table class="w-full text-sm">
+        <thead class="bg-white/5 text-slate-300">
+            <tr>
+                <th class="text-left p-4">ID</th>
+                <th class="text-left p-4">Nombre</th>
+                <th class="text-left p-4">Email</th>
+                <th class="text-left p-4">Tipo</th>
+                <th class="text-left p-4">Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios_desconectados %}
+            <tr class="border-t border-white/10 hover:bg-white/5 transition">
+                <td class="p-4 text-slate-500">{{ usuario.id }}</td>
+                <td class="p-4 font-bold">{{ usuario.nombre }}</td>
+                <td class="p-4 text-slate-400">{{ usuario.email }}</td>
+                <td class="p-4 text-slate-300">{{ usuario.tipo }}</td>
+                <td class="p-4">
+                    <span class="px-3 py-1 rounded-full bg-red-500/10 text-red-300 text-xs font-bold">
+                        {{ usuario.estado }}
+                    </span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="p-8 text-center text-slate-400">
+                    No hay usuarios inactivos.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}

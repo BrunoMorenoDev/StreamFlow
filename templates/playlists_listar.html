@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Playlists | StreamFlow
+{% endblock %}
+
+{% block content %}
+
+<div class="mb-8 flex items-center justify-between">
+    <div>
+        <h1 class="text-5xl font-black">Playlists</h1>
+        <p class="text-slate-400 mt-3">
+            Listas organizadas para guardar canciones por momento, género o estado de ánimo.
+        </p>
+    </div>
+
+    <a href="{% url 'playlists_crear' %}"
+       class="bg-green-500 hover:bg-green-400 text-black px-6 py-3 rounded-full font-black transition">
+        Nueva playlist
+    </a>
+</div>
+
+<div class="grid grid-cols-4 gap-6">
+    {% for playlist in playlists %}
+    <a href="{% url 'playlists_detalle' playlist.id %}"
+       class="bg-zinc-950/80 border border-white/10 hover:bg-zinc-900 transition rounded-3xl p-5 block">
+        <div class="aspect-square rounded-2xl bg-gradient-to-br from-cyan-500 via-green-500 to-emerald-600 flex items-center justify-center mb-5">
+            <i data-lucide="list-music" class="w-16 h-16 text-black"></i>
+        </div>
+
+        <h2 class="font-black text-xl leading-tight">{{ playlist.nombre }}</h2>
+        <p class="text-green-400 font-semibold mt-2">{{ playlist.creador }}</p>
+        <p class="text-slate-400 text-sm mt-3">{{ playlist.tipo }} · {{ playlist.canciones }} canciones</p>
+        <p class="text-slate-500 text-sm mt-1">{{ playlist.fecha }}</p>
+    </a>
+    {% empty %}
+    <div class="col-span-4 bg-zinc-950/80 border border-white/10 rounded-3xl p-8 text-center text-slate-400">
+        No hay playlists registradas.
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
