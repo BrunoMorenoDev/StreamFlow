@@ -6,6 +6,12 @@ def index(request):
     return redirect('login')
 
 
+def avatar_url(nombre):
+
+    nombre_url = nombre.replace('&', 'and').replace(' ', '+')
+    return 'https://ui-avatars.com/api/?name=' + nombre_url + '&background=10b981&color=ffffff&size=512&bold=true'
+
+
 ARTISTAS_IMAGENES = {
     'Bad Bunny': 'https://commons.wikimedia.org/wiki/Special:FilePath/Bad%20Bunny%202019%20by%20Glenn%20Francis%20(cropped).jpg',
     'Drake': 'https://commons.wikimedia.org/wiki/Special:FilePath/Drake%20at%20July%202016.jpg',
@@ -42,32 +48,91 @@ ARTISTAS_IMAGENES = {
 }
 
 ARTISTAS_IMAGENES.update({
-    '21 Savage': 'https://commons.wikimedia.org/wiki/Special:FilePath/21%20Savage%20performing%20at%20Austin%20City%20Limits%20Music%20Festival%20-%202023%20-%2053437517570%20%28cropped%29.jpg',
-    'Anuel AA': 'https://commons.wikimedia.org/wiki/Special:FilePath/Anuel%20AA%20in%202018.png',
-    'Avicii': 'https://commons.wikimedia.org/wiki/Special:FilePath/Avicii%20In%20The%20Studio%20-%20The%20Making%20of%20Dancing%20In%20My%20Head.png',
-    'Bizarrap': 'https://commons.wikimedia.org/wiki/Special:FilePath/Bizarrap%20in%202022.png',
-    'Daddy Yankee': 'https://commons.wikimedia.org/wiki/Special:FilePath/Daddy%20Yankee%20in%202019.jpg',
-    'Feid': 'https://commons.wikimedia.org/wiki/Special:FilePath/Feid%20in%202022.png',
-    'Future': 'https://commons.wikimedia.org/wiki/Special:FilePath/Future%20%28rapper%29%202019.png',
+    '21 Savage': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/21_Savage_2018.jpg/330px-21_Savage_2018.jpg',
+    'Anuel AA': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Anuel_AA_in_2022.png/330px-Anuel_AA_in_2022.png',
+    'Avicii': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Avicii_2014_003cr.jpg/330px-Avicii_2014_003cr.jpg',
+    'Bizarrap': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/2023-11-16_Gala_de_los_Latin_Grammy%2C_04_%28cropped%29_%282%29.jpg/330px-2023-11-16_Gala_de_los_Latin_Grammy%2C_04_%28cropped%29_%282%29.jpg',
+    'Daddy Yankee': 'https://upload.wikimedia.org/wikipedia/commons/b/b7/Daddy_Yankee_-_The_Kingdom_%28Official_Q_%26_A%29.png',
+    'Drake': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Drake_at_The_Carter_Effect_2017_%2836818935200%29_%28cropped%29.jpg/330px-Drake_at_The_Carter_Effect_2017_%2836818935200%29_%28cropped%29.jpg',
+    'Dua Lipa': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Glasto24_28_300624_%28259_of_545%29_%2853838014719%29_%28cropped%29.jpg/330px-Glasto24_28_300624_%28259_of_545%29_%2853838014719%29_%28cropped%29.jpg',
+    'Eladio Carrión': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Eladio_Carrion_%28p-B3-_Ng8bg%29.png/330px-Eladio_Carrion_%28p-B3-_Ng8bg%29.png',
+    'Feid': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Feid_image_3.jpg/330px-Feid_image_3.jpg',
+    'Future': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Future_-_Openair_Frauenfeld_2019_01_%28cropped%29.jpg/330px-Future_-_Openair_Frauenfeld_2019_01_%28cropped%29.jpg',
     'HUMBE': None,
-    'Junior H': None,
-    'Karol G': 'https://commons.wikimedia.org/wiki/Special:FilePath/Karol%20G%20interview%202023.png',
+    'Junior H': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Junior_H_%40_El_Domo_Care_-_Monterrey%2C_2022.png/330px-Junior_H_%40_El_Domo_Care_-_Monterrey%2C_2022.png',
+    'J Balvin': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/J_Balvin%2C_Noisey_Meets%3B_Oct_2018.jpg/330px-J_Balvin%2C_Noisey_Meets%3B_Oct_2018.jpg',
+    'Karol G': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/2023-11-16_Gala_de_los_Latin_Grammy%2C_15.jpg/330px-2023-11-16_Gala_de_los_Latin_Grammy%2C_15.jpg',
     'Latin Mafia': None,
-    'Maluma': 'https://commons.wikimedia.org/wiki/Special:FilePath/Maluma%20interview%202018.png',
-    'Martin Garrix': 'https://commons.wikimedia.org/wiki/Special:FilePath/Martin%20Garrix%20-%20MTV%20EMA%202018%20%28cropped%29.png',
-    'Morgan Wallen': 'https://commons.wikimedia.org/wiki/Special:FilePath/Morgan%20Wallen%20performing%20in%202019.jpg',
-    'Nilo J': None,
-    'Paulo Londra': 'https://commons.wikimedia.org/wiki/Special:FilePath/Paulo%20Londra%20%28cropped%29.jpg',
-    'Peso Pluma': 'https://commons.wikimedia.org/wiki/Special:FilePath/Peso%20Pluma%20-%20MTV%20MIAW%202023%20%28cropped%29.png',
-    'Rels B': 'https://commons.wikimedia.org/wiki/Special:FilePath/Rels%20B%20at%20the%202020%20Premios%20Ode%C3%B3n.jpg',
-    'Wisin & Yandel': 'https://commons.wikimedia.org/wiki/Special:FilePath/Wisin%20%26%20Yandel%20in%202018.jpg',
-    'Yandel': 'https://commons.wikimedia.org/wiki/Special:FilePath/Yandel%20in%202017.png'
+    'Maluma': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/2023-11-16_Gala_de_los_Latin_Grammy%2C_20_%28Maluma%29.jpg/330px-2023-11-16_Gala_de_los_Latin_Grammy%2C_20_%28Maluma%29.jpg',
+    'Martin Garrix': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Martin_Garrix_%40_Web_Summit_2017.jpg/330px-Martin_Garrix_%40_Web_Summit_2017.jpg',
+    'Miley Cyrus': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Miley_Cyrus_Primavera19_-226_%2848986293772%29_%28cropped%29.jpg/330px-Miley_Cyrus_Primavera19_-226_%2848986293772%29_%28cropped%29.jpg',
+    'Milo J': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Milo_J_-_Buenos_Aires_3.jpg/330px-Milo_J_-_Buenos_Aires_3.jpg',
+    'Myke Towers': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Myke_Towers_in_interview_-_Tony_Dandrades_-_2021.png/330px-Myke_Towers_in_interview_-_Tony_Dandrades_-_2021.png',
+    'Natanael Cano': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Cano6_%28cropped%29.jpg/330px-Cano6_%28cropped%29.jpg',
+    'Nicki Nicole': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Nicki_Nicole_en_KEXP_%2852380006338%29_%28cropped%29.jpg/330px-Nicki_Nicole_en_KEXP_%2852380006338%29_%28cropped%29.jpg',
+    'Olivia Rodrigo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Glasto2025-546_%28cropped%29_%282%29.jpg/330px-Glasto2025-546_%28cropped%29_%282%29.jpg',
+    'Ozuna': 'https://commons.wikimedia.org/wiki/Special:FilePath/Ozuna-2019.jpg',
+    'Rauw Alejandro': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/2023-11-16_Gala_de_los_Latin_Grammy%2C_13_%28cropped%29_%282%29.jpg/330px-2023-11-16_Gala_de_los_Latin_Grammy%2C_13_%28cropped%29_%282%29.jpg',
+    'Rosalía': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/2023-11-16_Gala_de_los_Latin_Grammy%2C_27_%28cropped%29.jpg/330px-2023-11-16_Gala_de_los_Latin_Grammy%2C_27_%28cropped%29.jpg',
+    'Sabrina Carpenter': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Sabrina_Carpenter_-_O2_Arena_2025_-_086_%28cropped_2%29.jpg/330px-Sabrina_Carpenter_-_O2_Arena_2025_-_086_%28cropped_2%29.jpg',
+    'Shakira': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2023-11-16_Gala_de_los_Latin_Grammy%2C_03_%28cropped%2902.jpg/330px-2023-11-16_Gala_de_los_Latin_Grammy%2C_03_%28cropped%2902.jpg',
+    'SZA': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/KendrickSZASPurs230725-19_-_54683179509_%28cropped%29_%28cropped%29.jpg/330px-KendrickSZASPurs230725-19_-_54683179509_%28cropped%29_%28cropped%29.jpg',
+    'Queen': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Queen_A_Night_At_The_Opera_%281975_Elektra_publicity_photo_02%29.jpg/330px-Queen_A_Night_At_The_Opera_%281975_Elektra_publicity_photo_02%29.jpg'
 })
+
+ARTISTAS_IMAGENES.update({
+    'Ariana Grande': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Ariana_Grande_promoting_Wicked_%282024%29.jpg/330px-Ariana_Grande_promoting_Wicked_%282024%29.jpg',
+    'Billie Eilish': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/BillieEilishO2140725-39_-_54665577407_%28cropped%29.jpg/330px-BillieEilishO2140725-39_-_54665577407_%28cropped%29.jpg',
+    'Central Cee': avatar_url('Central Cee'),
+    'HUMBE': avatar_url('HUMBE'),
+    'Kali Uchis': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Kali_Uchis_Lollapalooza_2018_%2829464382318%29_%28cropped%29.jpg/330px-Kali_Uchis_Lollapalooza_2018_%2829464382318%29_%28cropped%29.jpg',
+    'Kendrick Lamar': avatar_url('Kendrick Lamar'),
+    'Latin Mafia': avatar_url('Latin Mafia'),
+    'Manuel Turizo': avatar_url('Manuel Turizo'),
+    'Mora': avatar_url('Mora'),
+    'Morgan Wallen': avatar_url('Morgan Wallen'),
+    'Nilo J': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Milo_J_-_Buenos_Aires_3.jpg/330px-Milo_J_-_Buenos_Aires_3.jpg',
+    'Paulo Londra': avatar_url('Paulo Londra'),
+    'Peso Pluma': avatar_url('Peso Pluma'),
+    'Quevedo': avatar_url('Quevedo'),
+    'Rels B': avatar_url('Rels B'),
+    'Tame Impala': avatar_url('Tame Impala'),
+    'Wisin & Yandel': avatar_url('Wisin Yandel'),
+    'Yandel': avatar_url('Yandel')
+})
+
+ALBUMES_IMAGENES = {
+    'Country Pop Essentials': ARTISTAS_IMAGENES.get('Morgan Wallen'),
+    'Hip Hop US Essentials': ARTISTAS_IMAGENES.get('Kendrick Lamar'),
+    'HUMBE Essentials': ARTISTAS_IMAGENES.get('HUMBE'),
+    'Latin Mafia Essentials': ARTISTAS_IMAGENES.get('Latin Mafia'),
+    'Mora Essentials': ARTISTAS_IMAGENES.get('Mora'),
+    'Nilo J Essentials': ARTISTAS_IMAGENES.get('Nilo J'),
+    'Paulo Londra Essentials': ARTISTAS_IMAGENES.get('Paulo Londra'),
+    'Peso Pluma Essentials': ARTISTAS_IMAGENES.get('Peso Pluma'),
+    'Pop Urbano Essentials': ARTISTAS_IMAGENES.get('Manuel Turizo'),
+    'Quevedo Essentials': ARTISTAS_IMAGENES.get('Quevedo'),
+    'R&B Latino Essentials': ARTISTAS_IMAGENES.get('Kali Uchis'),
+    'Psychedelic Pop Essentials': ARTISTAS_IMAGENES.get('Tame Impala'),
+    'Reggaeton Clásico Essentials': ARTISTAS_IMAGENES.get('Wisin & Yandel'),
+    'Reggaeton Clasico Essentials': ARTISTAS_IMAGENES.get('Wisin & Yandel'),
+    'Rels B Essentials': ARTISTAS_IMAGENES.get('Rels B'),
+    'UK Rap Essentials': ARTISTAS_IMAGENES.get('Central Cee'),
+    'Yandel Essentials': ARTISTAS_IMAGENES.get('Yandel'),
+    'Microdosis': ARTISTAS_IMAGENES.get('Mora'),
+    'Clásicos del Ecuador': avatar_url('Clasicos Ecuador'),
+    'Clasicos del Ecuador': avatar_url('Clasicos Ecuador')
+}
 
 
 def imagen_artista(nombre):
 
     return ARTISTAS_IMAGENES.get(nombre)
+
+
+def imagen_album(titulo, artista):
+
+    return ALBUMES_IMAGENES.get(titulo) or imagen_artista(artista) or avatar_url(artista)
 
 
 def artista_portada(nombre):
@@ -484,7 +549,7 @@ def albumes_listar(request):
             'tipo': row[3],
             'artista': row[4],
             'canciones': row[5],
-            'imagen': imagen_artista(row[4])
+            'imagen': imagen_album(row[1], row[4])
         })
 
     return render(request, 'albumes_listar.html', {
@@ -1304,7 +1369,7 @@ def albumes_admin(request):
             'tipo': row[3],
             'artista': row[4],
             'canciones': row[5],
-            'imagen': imagen_artista(row[4])
+            'imagen': imagen_album(row[1], row[4])
         })
 
     return render(request, 'albumes_admin_listar.html', {
